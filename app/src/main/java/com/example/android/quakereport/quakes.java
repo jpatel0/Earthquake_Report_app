@@ -10,10 +10,13 @@ public class quakes {
 
     private String date;
 
-    public quakes(double m,String p,String d) {
+    private String time;
+
+    public quakes(double m,String p,String d,String t) {
         mag=m;
         place=p;
         date=d;
+        time=t;
     }
 
     public double getMag() {
@@ -26,5 +29,9 @@ public class quakes {
 
     public String getDate() {
         return date;
+    }
+
+    public String getTime() {
+        return time;
     }
 }

@@ -64,9 +64,9 @@ public final class QueryUtils {
                     place=properties.getString("place");
                     date=properties.getLong("time");
                     dateobj=new Date(date);
-                    SimpleDateFormat df=new SimpleDateFormat("MMM dd,yyyy");
-
-                    earthquakes.add(new quakes(mag,place,df.format(dateobj)));
+                    SimpleDateFormat dfdate=new SimpleDateFormat("MMM dd,yyyy");
+                    SimpleDateFormat dftime=new SimpleDateFormat("h:mm a");
+                    earthquakes.add(new quakes(mag,place,dfdate.format(dateobj),dftime.format(dateobj)));
                     /*data="MAG:"+mag+", Place:"+place+", time:"+date;
                     Log.i("DATA::",data);
                     */
@@ -75,9 +75,7 @@ public final class QueryUtils {
             // build up a list of Earthquake objects with the corresponding data.
 
         } catch (JSONException e) {
-            // If an error is thrown when executing any of the above statements in the "try" block,
-            // catch the exception here, so the app doesn't crash. Print a log message
-            // with the message from the exception.
+
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
 

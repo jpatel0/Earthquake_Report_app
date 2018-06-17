@@ -11,7 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class custom_adapter extends ArrayAdapter<quakes> {
@@ -34,29 +36,21 @@ public class custom_adapter extends ArrayAdapter<quakes> {
                     R.layout.custom_listview, parent, false);
         }
 
-        // Get the {@link AndroidFlavor} object located at this position in the list
         quakes currentquakeobj = getItem(position);
 
-        // Find the TextView in the list_item.xml layout with the ID version_name
         TextView magTextView = (TextView) listItemView.findViewById(R.id.magid);
-        // Get the version name from the current AndroidFlavor object and
-        // set this text on the name TextView
         magTextView.setText(String.valueOf(currentquakeobj.getMag()));
 
-        // Find the TextView in the list_item.xml layout with the ID version_number
+
         TextView placeTextView = (TextView) listItemView.findViewById(R.id.placeid);
-        // Get the version number from the current AndroidFlavor object and
-        // set this text on the number TextView
         placeTextView.setText(currentquakeobj.getPlace());
 
-        // Find the ImageView in the list_item.xml layout with the ID list_item_icon
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.dateid);
-        // Get the image resource ID from the current AndroidFlavor object and
-        // set the image to iconView
         dateTextView.setText(currentquakeobj.getDate());
 
-        // Return the whole list item layout (containing 2 TextViews and an ImageView)
-        // so that it can be shown in the ListView
+        TextView timeTextView = (TextView) listItemView.findViewById(R.id.timeid);
+        timeTextView.setText(currentquakeobj.getTime());
+
         return listItemView;
     }
 }
