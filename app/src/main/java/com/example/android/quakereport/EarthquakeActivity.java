@@ -20,7 +20,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -30,23 +34,26 @@ public class EarthquakeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
+        Date d= new Date();
+        DateFormat df = new SimpleDateFormat("dd-mm-yyyy");
+        String s=(String) df.format(d);
+
 
         // Create a fake list of earthquake locations.
-        ArrayList<String> earthquakes = new ArrayList<>();
-        earthquakes.add("San Francisco");
-        earthquakes.add("London");
-        earthquakes.add("Tokyo");
-        earthquakes.add("Mexico City");
-        earthquakes.add("Moscow");
-        earthquakes.add("Rio de Janeiro");
-        earthquakes.add("Paris");
+        ArrayList<quakes> earthquakes = new ArrayList<quakes>();
+        earthquakes.add(new quakes(3.4,"San Francisco", s));
+        earthquakes.add(new quakes(4.4,"London",s));
+        earthquakes.add(new quakes(5.5,"Tokyo",s));
+        earthquakes.add(new quakes(6.6,"Mexico City",s));
+        earthquakes.add(new quakes(4.7,"Moscow",s));
+        earthquakes.add(new quakes(2.62,"Rio de Janeiro",s));
+        earthquakes.add(new quakes(3.8,"Paris",s));
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
         // Create a new {@link ArrayAdapter} of earthquakes
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, earthquakes);
+        custom_adapter adapter = new custom_adapter(this, earthquakes);
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
