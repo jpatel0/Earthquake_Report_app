@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="50sp"
-    android:layout_margin="7sp"
-    android:gravity="fill"
+    android:layout_margin="3sp"
     android:orientation="horizontal"
     android:paddingLeft="2dp"
     android:paddingRight="2dp">
@@ -14,45 +13,65 @@
         android:layout_width="50sp"
         android:layout_height="match_parent"
         android:layout_margin="2dp"
-
         android:background="@android:drawable/presence_online"
         android:gravity="center_vertical|center_horizontal"
         android:textColor="@android:color/background_light"
         android:textColorLink="@android:color/holo_blue_bright"
         android:textSize="18dp" />
 
-    <TextView
-        android:id="@+id/placeid"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_margin="2dp"
-        android:layout_weight="1"
-        android:textSize="18dp" />
+        android:layout_weight="1.5"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/offsetid"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="3sp"
+            android:text="0 km E of"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/placeid"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:padding="3sp"
+            android:text="ABCDEFGH"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="fill"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/dateid"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="2dp"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:textSize="18dp" />
+            android:gravity="right|center_vertical"
+            android:padding="3sp"
+            android:text="JAN 01, 2017"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/timeid"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="2dp"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:textSize="18dp" />
+            android:gravity="right|center_vertical"
+            android:paddingBottom="3sp"
+            android:paddingLeft="3sp"
+            android:text="4:33 PM"
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

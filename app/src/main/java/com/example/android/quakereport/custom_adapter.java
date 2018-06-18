@@ -41,9 +41,11 @@ public class custom_adapter extends ArrayAdapter<quakes> {
         TextView magTextView = (TextView) listItemView.findViewById(R.id.magid);
         magTextView.setText(String.valueOf(currentquakeobj.getMag()));
 
+        TextView offsetTextView = (TextView) listItemView.findViewById(R.id.offsetid);
+        offsetTextView.setText(currentquakeobj.getOffset());
 
         TextView placeTextView = (TextView) listItemView.findViewById(R.id.placeid);
-        placeTextView.setText(currentquakeobj.getPlace());
+        placeTextView.setText(currentquakeobj.getLocation());
 
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.dateid);
         dateTextView.setText(currentquakeobj.getDate());

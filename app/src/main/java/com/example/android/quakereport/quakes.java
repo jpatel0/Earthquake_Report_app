@@ -1,12 +1,18 @@
 package com.example.android.quakereport;
 
+import android.util.Log;
+
 import java.util.Date;
 
 public class quakes {
 
     private double mag;
 
+    private String offset;
+
     private String place;
+
+    private String location;
 
     private String date;
 
@@ -17,14 +23,15 @@ public class quakes {
         place=p;
         date=d;
         time=t;
+        offset=getOffset();
     }
 
     public double getMag() {
         return mag;
     }
 
-    public String getPlace() {
-        return place;
+    public String getLocation() {
+        return location;
     }
 
     public String getDate() {
@@ -33,5 +40,22 @@ public class quakes {
 
     public String getTime() {
         return time;
+    }
+
+
+    public String getOffset() {
+        if(place.contains("km")){
+            offset=place.substring(0,place.indexOf("of"));
+            offset+="of";
+            location=place.substring((place.indexOf("of")+3),place.length());
+            Log.i("offset value:",offset);
+            Log.i("place value:",location);
+        }
+        else {
+            offset="Near to ";
+            location=place;
+        }
+
+        return offset;
     }
 }
