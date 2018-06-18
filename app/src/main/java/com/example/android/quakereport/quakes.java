@@ -2,6 +2,7 @@ package com.example.android.quakereport;
 
 import android.util.Log;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class quakes {
@@ -19,7 +20,8 @@ public class quakes {
     private String time;
 
     public quakes(double m,String p,String d,String t) {
-        mag=m;
+        DecimalFormat df=new DecimalFormat("0.0");
+        mag=Double.parseDouble(df.format(m));
         place=p;
         date=d;
         time=t;
@@ -58,4 +60,6 @@ public class quakes {
 
         return offset;
     }
+
+
 }
