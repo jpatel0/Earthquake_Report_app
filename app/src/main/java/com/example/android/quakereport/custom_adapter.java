@@ -1,7 +1,6 @@
 package com.example.android.quakereport;
 
 import android.app.Activity;
-
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
