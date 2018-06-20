@@ -43,116 +43,82 @@ import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     ArrayList<quakes> earthquakes;
     ListView earthquakeListView;
+    custom_adapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
-        String url="https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2016-01-01&endtime=2016-05-02&minfelt=50&minmagnitude=5";
-        DownloadTask downloadTask=new DownloadTask();
-        downloadTask.execute(url);
 
-    }
 
-    public void updateUI(ArrayList<quakes> earthq){
-        custom_adapter adapter = new custom_adapter(this, earthq);
+
+        ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+        // Create a new adapter that takes an empty list of earthquakes as input
+        mAdapter = new custom_adapter(this, new ArrayList<quakes>());
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter);
+        earthquakeListView.setAdapter(mAdapter);
 
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                quakes selectedItem=(quakes) adapterView.getItemAtPosition(i);
-                Intent openBrowser=new Intent(Intent.ACTION_VIEW, Uri.parse(selectedItem.getUrl()));
-                startActivity(openBrowser);
+                quakes currItem=(quakes) adapterView.getItemAtPosition(i);
+                Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(currItem.getUrl()));
+                startActivity(intent);
             }
         });
+
+        EarthquakeAsyncTask downloadTask=new EarthquakeAsyncTask();
+        downloadTask.execute(QueryUtils.USGS_URL);
     }
 
-    private class DownloadTask extends AsyncTask<String,Void,ArrayList<quakes>> {
 
+
+
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<quakes>> {
+
+        /**
+         * This method runs on a background thread and performs the network request.
+         * We should not update the UI from a background thread, so we return a list of
+         * {@link quakes}s as the result.
+         */
         @Override
-        protected ArrayList<quakes> doInBackground(String... u) {
-            URL url=createURL(u[0]);
-            String jsonResponse="";
-            try {
-                jsonResponse = makeHttpRequest(url);
-                Log.i("JSON String:",jsonResponse);
-            }catch (IOException e){
-                e.printStackTrace();
+        protected List<quakes> doInBackground(String... urls) {
+            // Don't perform the request if there are no URLs, or the first URL is null.
+            if (urls.length < 1 || urls[0] == null) {
+                return null;
             }
-            // Create a fake list of earthquake locations.
-            earthquakes = QueryUtils.extractEarthquakes(jsonResponse);
 
-
-            // Find a reference to the {@link ListView} in the layout
-            earthquakeListView = (ListView) findViewById(R.id.list);
-            return earthquakes;
-            // Create a new {@link ArrayAdapter} of earthquakes
+            List<quakes> result = QueryUtils.fetchEarthquakeData(urls[0]);
+            return result;
         }
 
+        /**
+         * This method runs on the main UI thread after the background work has been
+         * completed. This method receives as input, the return value from the doInBackground()
+         * method. First we clear out the adapter, to get rid of earthquake data from a previous
+         * query to USGS. Then we update the adapter with the new list of earthquakes,
+         * which will trigger the ListView to re-populate its list items.
+         */
         @Override
-        protected void onPostExecute(ArrayList<quakes> earthq) {
-           updateUI(earthq);
+        protected void onPostExecute(List<quakes> data) {
+            // Clear the adapter of previous earthquake data
+            mAdapter.clear();
 
-        }
-
-        private URL createURL(String u){
-            URL url=null;
-            try {
-                url=new URL(u);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+            // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+            // data set. This will trigger the ListView to update.
+            if (data != null && !data.isEmpty()) {
+                mAdapter.addAll(data);
             }
-            return url;
         }
-
-        private String makeHttpRequest(URL url)throws IOException{
-            HttpURLConnection httpURLConnection;
-            InputStream inputStream;
-
-            try {
-                httpURLConnection=(HttpURLConnection) url.openConnection();
-                httpURLConnection.setReadTimeout(10000);
-                httpURLConnection.setConnectTimeout(15000);
-                httpURLConnection.setRequestMethod("GET");
-                httpURLConnection.connect();
-
-                inputStream=httpURLConnection.getInputStream();
-                String jsonResponse=readFromStream(inputStream);
-                Log.i("JSON:",jsonResponse);
-                return jsonResponse;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        private String readFromStream(InputStream inputStream)throws IOException{
-            InputStreamReader inputStreamReader=new InputStreamReader(inputStream, Charset.forName("UTF-8"));
-            BufferedReader bufferedReader=new BufferedReader(inputStreamReader);
-            StringBuilder stringBuilder=new StringBuilder();
-            String readLine="";
-            try {
-                readLine=bufferedReader.readLine();
-                while (readLine!=null){
-                    stringBuilder.append(readLine);
-                    readLine=bufferedReader.readLine();
-                }
-                return stringBuilder.toString();
-            }catch (NullPointerException e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
     }
 }
