@@ -19,12 +19,19 @@ public class quakes {
 
     private String time;
 
-    public quakes(double m,String p,String d,String t) {
+    String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public quakes(double m, String p, String d, String t,String u) {
         DecimalFormat df=new DecimalFormat("0.0");
         mag=Double.parseDouble(df.format(m));
         place=p;
         date=d;
         time=t;
+        url=u;
         offset=getOffset();
     }
 
