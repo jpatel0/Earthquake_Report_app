@@ -53,6 +53,7 @@ public final class QueryUtils {
         String jsonResponse = "";
         try {
             jsonResponse = makeHttpRequest(url);
+            Log.i("JsonResponse:",jsonResponse);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
